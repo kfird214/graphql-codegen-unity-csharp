@@ -5,8 +5,8 @@ import {
   PluginFunction,
   Types,
 } from '@graphql-codegen/plugin-helpers';
-import { CSharpResolversPluginRawConfig } from './config.js';
-import { CSharpResolversVisitor } from './visitor.js';
+import { CSharpResolversPluginRawConfig } from './config';
+import { CSharpResolversVisitor } from './visitor';
 
 export const plugin: PluginFunction<CSharpResolversPluginRawConfig> = async (
   schema: GraphQLSchema,

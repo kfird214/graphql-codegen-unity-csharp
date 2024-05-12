@@ -9,7 +9,7 @@ const change_case_all_1 = require("change-case-all");
 const graphql_1 = require("graphql");
 const c_sharp_common_1 = require("@graphql-codegen/c-sharp-common");
 const visitor_plugin_common_1 = require("@graphql-codegen/visitor-plugin-common");
-const json_attributes_js_1 = require("./json-attributes.js");
+const json_attributes_1 = require("./json-attributes");
 class CSharpResolversVisitor extends visitor_plugin_common_1.BaseVisitor {
     constructor(rawConfig, _schema) {
         var _a;
@@ -25,7 +25,7 @@ class CSharpResolversVisitor extends visitor_plugin_common_1.BaseVisitor {
         });
         this._schema = _schema;
         if (this._parsedConfig.emitJsonAttributes) {
-            this.jsonAttributesConfiguration = (0, json_attributes_js_1.getJsonAttributeSourceConfiguration)(this._parsedConfig.jsonAttributesSource);
+            this.jsonAttributesConfiguration = (0, json_attributes_1.getJsonAttributeSourceConfiguration)(this._parsedConfig.jsonAttributesSource);
         }
     }
     getImports() {
@@ -281,7 +281,7 @@ ${classMembers}
 }`;
     }
     buildInputTransformer(name, description, inputValueArray) {
-        var _a;
+        var _a, _b;
         const classSummary = (0, c_sharp_common_1.transformComment)((_a = description === null || description === void 0 ? void 0 : description.value) !== null && _a !== void 0 ? _a : '');
         const classMembers = (inputValueArray || [])
             .map(arg => {
@@ -292,7 +292,6 @@ ${classMembers}
             return fieldHeader + (0, visitor_plugin_common_1.indent)(`public ${csharpFieldType} ${fieldName} { get; set; }`);
         })
             .join('\n\n');
-        (0, assert_1.default)(this.jsonAttributesConfiguration);
         return `
 ${classSummary}public class ${(0, c_sharp_common_1.convertSafeName)(name)} {
 ${classMembers}
@@ -307,7 +306,7 @@ ${classMembers}
       var value = propertyInfo.GetValue(this);
       var defaultValue = propertyInfo.PropertyType.IsValueType ? Activator.CreateInstance(propertyInfo.PropertyType) : null;
 ${this._parsedConfig.emitJsonAttributes &&
-            this.jsonAttributesConfiguration.requiredAttribute != null
+            ((_b = this.jsonAttributesConfiguration) === null || _b === void 0 ? void 0 : _b.requiredAttribute) != null
             ? `
       var requiredProp = propertyInfo.GetCustomAttributes(typeof(${this.jsonAttributesConfiguration.requiredAttribute}Attribute), false).Length > 0;
 `

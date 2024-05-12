@@ -38,12 +38,12 @@ import {
     indentMultiline,
     ParsedConfig,
 } from '@graphql-codegen/visitor-plugin-common';
-import { CSharpResolversPluginRawConfig } from './config.js';
+import { CSharpResolversPluginRawConfig } from './config';
 import {
     getJsonAttributeSourceConfiguration,
     JsonAttributesSource,
     JsonAttributesSourceConfiguration,
-} from './json-attributes.js';
+} from './json-attributes';
 
 export interface CSharpResolverParsedConfig extends ParsedConfig {
     namespaceName: string;
@@ -393,8 +393,6 @@ ${classMembers}
             })
             .join('\n\n');
 
-        assert(this.jsonAttributesConfiguration);
-
         return `
 ${classSummary}public class ${convertSafeName(name)} {
 ${classMembers}
@@ -409,7 +407,7 @@ ${classMembers}
       var value = propertyInfo.GetValue(this);
       var defaultValue = propertyInfo.PropertyType.IsValueType ? Activator.CreateInstance(propertyInfo.PropertyType) : null;
 ${this._parsedConfig.emitJsonAttributes &&
-                this.jsonAttributesConfiguration.requiredAttribute != null
+                this.jsonAttributesConfiguration?.requiredAttribute != null
                 ? `
       var requiredProp = propertyInfo.GetCustomAttributes(typeof(${this.jsonAttributesConfiguration.requiredAttribute}Attribute), false).Length > 0;
 `

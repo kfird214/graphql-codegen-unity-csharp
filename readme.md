@@ -1,0 +1,1 @@
+manual fork of dotansimha/graphql-code-generator.git
