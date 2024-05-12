@@ -32,7 +32,6 @@ class CSharpResolversVisitor extends visitor_plugin_common_1.BaseVisitor {
         const allImports = [
             'System',
             'System.Collections.Generic',
-            'System.ComponentModel.DataAnnotations',
         ];
         if (this._parsedConfig.emitJsonAttributes) {
             (0, assert_1.default)(this.jsonAttributesConfiguration);
@@ -103,7 +102,7 @@ class CSharpResolversVisitor extends visitor_plugin_common_1.BaseVisitor {
         if (node.kind === graphql_1.Kind.INPUT_VALUE_DEFINITION && ((_c = fieldType === null || fieldType === void 0 ? void 0 : fieldType.isOuterTypeRequired) !== null && _c !== void 0 ? _c : false)) {
             // Should be always inserted for required fields to use in `GetInputObject()` when JSON attributes are not used
             // or there are no JSON attributes in selected attribute source that provides `JsonRequired` alternative
-            attributes.push('[Required]');
+            // attributes.push('[Required]');
             if (this._parsedConfig.emitJsonAttributes) {
                 (0, assert_1.default)(this.jsonAttributesConfiguration);
                 const jsonRequiredAttribute = this.jsonAttributesConfiguration.requiredAttribute;
@@ -227,13 +226,10 @@ class CSharpResolversVisitor extends visitor_plugin_common_1.BaseVisitor {
         })
             .join(', ');
         return `
-#region ${name}
 ${classSummary}public record ${(0, c_sharp_common_1.convertSafeName)(name)}(${recordInitializer})${interfaceImpl} {
-  #region members
 ${recordMembers}
-  #endregion
 }
-#endregion`;
+`;
     }
     buildClass(name, description, inputValueArray, interfaces) {
         var _a;
@@ -251,13 +247,10 @@ ${recordMembers}
         })
             .join('\n\n');
         return `
-#region ${name}
 ${classSummary}public class ${(0, c_sharp_common_1.convertSafeName)(name)}${interfaceImpl} {
-  #region members
 ${classMembers}
-  #endregion
 }
-#endregion`;
+`;
     }
     buildInterface(name, description, inputValueArray) {
         var _a;
@@ -301,13 +294,9 @@ ${classMembers}
             .join('\n\n');
         (0, assert_1.default)(this.jsonAttributesConfiguration);
         return `
-#region ${name}
 ${classSummary}public class ${(0, c_sharp_common_1.convertSafeName)(name)} {
-  #region members
 ${classMembers}
-  #endregion
 
-  #region methods
   public dynamic GetInputObject()
   {
     IDictionary<string, object> d = new System.Dynamic.ExpandoObject();
@@ -332,9 +321,8 @@ ${this._parsedConfig.emitJsonAttributes &&
     }
     return d;
   }
-  #endregion
 }
-#endregion`;
+`;
     }
     InputObjectTypeDefinition(node) {
         const name = `${this.convertName(node)}`;

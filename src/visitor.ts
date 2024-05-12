@@ -84,7 +84,6 @@ export class CSharpResolversVisitor extends BaseVisitor<
         const allImports = [
             'System',
             'System.Collections.Generic',
-            'System.ComponentModel.DataAnnotations',
         ];
         if (this._parsedConfig.emitJsonAttributes) {
             assert(this.jsonAttributesConfiguration)
@@ -169,7 +168,7 @@ export class CSharpResolversVisitor extends BaseVisitor<
         if (node.kind === Kind.INPUT_VALUE_DEFINITION && (fieldType?.isOuterTypeRequired ?? false)) {
             // Should be always inserted for required fields to use in `GetInputObject()` when JSON attributes are not used
             // or there are no JSON attributes in selected attribute source that provides `JsonRequired` alternative
-            attributes.push('[Required]');
+            // attributes.push('[Required]');
             if (this._parsedConfig.emitJsonAttributes) {
                 assert(this.jsonAttributesConfiguration)
                 const jsonRequiredAttribute = this.jsonAttributesConfiguration.requiredAttribute;
