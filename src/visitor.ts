@@ -308,13 +308,10 @@ export class CSharpResolversVisitor extends BaseVisitor<
             })
             .join(', ');
         return `
-#region ${name}
 ${classSummary}public record ${convertSafeName(name)}(${recordInitializer})${interfaceImpl} {
-  #region members
 ${recordMembers}
-  #endregion
 }
-#endregion`;
+`;
     }
 
     protected buildClass(
@@ -339,13 +336,10 @@ ${recordMembers}
             .join('\n\n');
 
         return `
-#region ${name}
 ${classSummary}public class ${convertSafeName(name)}${interfaceImpl} {
-  #region members
 ${classMembers}
-  #endregion
 }
-#endregion`;
+`;
     }
 
     protected buildInterface(
@@ -403,13 +397,9 @@ ${classMembers}
         assert(this.jsonAttributesConfiguration);
 
         return `
-#region ${name}
 ${classSummary}public class ${convertSafeName(name)} {
-  #region members
 ${classMembers}
-  #endregion
 
-  #region methods
   public dynamic GetInputObject()
   {
     IDictionary<string, object> d = new System.Dynamic.ExpandoObject();
@@ -435,9 +425,8 @@ ${this._parsedConfig.emitJsonAttributes &&
     }
     return d;
   }
-  #endregion
 }
-#endregion`;
+`;
     }
 
     InputObjectTypeDefinition(node: InputObjectTypeDefinitionNode): string {
